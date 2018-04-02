@@ -44,12 +44,15 @@ function createAd() {
     let date = form.find('input[name=datePublished]').val();
     let price = form.find('input[name=price]').val();
     let publisher = sessionStorage.getItem('username');
+    let image = form.find('input[name=image]').val();
     let ad = JSON.stringify({
         'Title': title,
         'Description': description,
         'Publisher': publisher,
         'Date Published': date.toString('yyyy-MM-dd'),
-        'Price': Number(price)
+        'Price': Number(price),
+        'Image': image,
+        'Views': 0
     });
 
     $.ajax({
@@ -79,16 +82,22 @@ function displayAds(ads) {
             .append(priceTh)
             .append(dateTh);
 
+        let actionsTd = $('<td>');
+        let readMoreBtn = $('<a href="#">[Read More]<a/>').on('click', () => displayAdDetails(ad));
+        actionsTd.append(readMoreBtn)
+            .append(' ');
+
         if (sessionStorage.getItem('userId') === ad._acl.creator){
-            let actionsTd = $('<td>');
+
             let deleteBtn = $('<a href="#">[Delete]<a/>').on('click', () => deleteAd(ad));
             let editBtn = $('<a href="#">[Edit]</a>').on('click', () => loadAdForEdit(ad));
 
             actionsTd.append(deleteBtn)
+                .append(' ')
                 .append(editBtn);
-
-            tr.append(actionsTd);
         }
+
+        tr.append(actionsTd);
 
         function deleteAd(ad) {
             $.ajax({
@@ -110,6 +119,7 @@ function displayAds(ads) {
             form.find('textarea[name=description]').val(ad.Description);
             form.find('input[name=datePublished]').val(ad['Date Published']);
             form.find('input[name=price]').val(ad.Price);
+            form.find('input[name=image]').val(ad.Image);
         }
 
         $('#ads').find('table').append(tr);
@@ -124,13 +134,15 @@ function editAd() {
     let description = form.find('textarea[name=description]').val();
     let date = form.find('input[name=datePublished]').val();
     let price = form.find('input[name=price]').val();
+    let image = form.find('input[name=image]').val();
 
     let editedData = JSON.stringify({
         'Title': title,
         'Description': description,
         'Publisher': publisher,
         'Date Published': date.toString('yyyy-MM-dd'),
-        'Price': Number(price)
+        'Price': Number(price),
+        'Image': image
     });
 
     $.ajax({
@@ -143,6 +155,28 @@ function editAd() {
         listAds();
         showInfo('Ad edited.');
     })
+}
+
+function displayAdDetails(ad) {
+    let view = $('#viewDetailsAd');
+    view.empty();
+
+    let adInfo = $('<div>').append(
+        $(`<img src="${ad.Image}" width="150" height="150">`),
+        $('<br>'),
+        $('<label>').text('Title:'),
+        $('<h1>').text(ad.Title),
+        $('<label>').text('Description:'),
+        $('<p>').text(ad.Description),
+        $('<label>').text('Publisher:'),
+        $('<div>').text(ad.Publisher),
+        $('<label>').text('Date:'),
+        $('<div>').text(ad['Date Published']),
+        $('<label>').text(`Views: ${ad.Views}`),
+    );
+
+    view.append(adInfo);
+    showAdDetailsView();
 }
 
 function listAds() {

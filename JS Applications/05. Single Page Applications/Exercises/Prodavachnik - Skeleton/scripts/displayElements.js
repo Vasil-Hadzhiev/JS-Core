@@ -64,3 +64,7 @@ function showListAdsView() {
 function showEditAdView() {
     showView('viewEditAd');
 }
+
+function showAdDetailsView() {
+    showView('viewDetailsAd');
+}
