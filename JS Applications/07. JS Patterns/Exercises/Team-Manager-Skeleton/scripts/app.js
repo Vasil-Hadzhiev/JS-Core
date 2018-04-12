@@ -77,7 +77,7 @@ $(() => {
 
             auth.register(username, password, repeatPassword)
                 .then((userData) => {
-                    ctx.redirect('#/index.html');
+                    ctx.redirect('#/login');
                 })
                 .catch((error) => {
                     auth.handleError(error);
@@ -161,7 +161,8 @@ $(() => {
                     let teamId = teamInfo._id;
                     teamsService.joinTeam(teamId)
                         .then(function (userInfo) {
-                            auth.saveSession(userInfo)
+                            auth.saveSession(userInfo);
+                            ctx.redirect('#/catalog');
                         })
                         .catch((error) => {
                             auth.handleError(error)
@@ -202,6 +203,7 @@ $(() => {
             teamsService.edit(teamId, teamName, description)
                 .then(function () {
                     auth.showInfo(`Team ${teamName} edited.`);
+                    ctx.redirect('#/catalog');
                 });
         });
 
@@ -212,6 +214,7 @@ $(() => {
                 .then(function (userInfo) {
                     auth.saveSession(userInfo);
                     auth.showInfo('You have joined the team.');
+                    ctx.redirect('#/catalog');
                 });
 
         });
@@ -221,6 +224,7 @@ $(() => {
                 .then(function name(userInfo) {
                     auth.saveSession(userInfo);
                     auth.showInfo('You have left the team.');
+                    ctx.redirect('#/catalog');
                 });
         });
     });
