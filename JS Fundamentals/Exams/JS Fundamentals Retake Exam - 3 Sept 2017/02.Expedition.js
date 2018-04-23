@@ -1,11 +1,11 @@
 function solve(primaryMatrix, secondaryMatrix, coordinates, startingPoint) {
 
     for (let i = 0; i < coordinates.length; i++) {
-        let arr = coordinates[i].join(" ")
-        let tokens = arr.split(" ")
-        let startRow = Number(tokens[0])
-        let startCol = Number(tokens[1])
-        let tempCol = startCol
+        let arr = coordinates[i].join(' ');
+        let tokens = arr.split(" ");
+        let startRow = Number(tokens[0]);
+        let startCol = Number(tokens[1]);
+        let tempCol = startCol;
 
         for (let row = 0; row < secondaryMatrix.length; row++) {
             for (let col = 0; col < secondaryMatrix[row].length; col++) {
@@ -13,7 +13,7 @@ function solve(primaryMatrix, secondaryMatrix, coordinates, startingPoint) {
                     break
                 }
 
-                let sum = primaryMatrix[startRow][startCol] + secondaryMatrix[row][col]
+                let sum = primaryMatrix[startRow][startCol] + secondaryMatrix[row][col];
 
                 if(sum === 2 || sum === 0){
                     primaryMatrix[startRow][startCol] = 0
@@ -23,31 +23,31 @@ function solve(primaryMatrix, secondaryMatrix, coordinates, startingPoint) {
 
                 startCol++
             }
-            startRow++
+            startRow++;
             startCol = tempCol
         }
     }
-    let primaryMatrixRows = primaryMatrix.length
-    let primaryMatrixCols = primaryMatrix[0].length
-    let secondaryMatrixRows = secondaryMatrix.length
-    let secondaryMatrixCols = secondaryMatrix[0].length
+    let primaryMatrixRows = primaryMatrix.length;
+    let primaryMatrixCols = primaryMatrix[0].length;
+    let secondaryMatrixRows = secondaryMatrix.length;
+    let secondaryMatrixCols = secondaryMatrix[0].length;
 
-    let currentPosition = [startingPoint[0], startingPoint[1]]
-    let previousDirection
-    let steps = 1
+    let currentPosition = [startingPoint[0], startingPoint[1]];
+    let previousDirection;
+    let steps = 1;
 
     while (true) {
         if (currentPosition[0] + 1 < primaryMatrixRows && primaryMatrix[currentPosition[0] + 1][currentPosition[1]] === 0 && previousDirection !== "up") {
-            currentPosition = [currentPosition[0] + 1, currentPosition[1]]
+            currentPosition = [currentPosition[0] + 1, currentPosition[1]];
             previousDirection = "down"
         } else if (currentPosition[1] + 1 < primaryMatrixCols && primaryMatrix[currentPosition[0]][currentPosition[1] + 1] === 0 && previousDirection !== "left") {
-            currentPosition = [currentPosition[0], currentPosition[1] + 1]
+            currentPosition = [currentPosition[0], currentPosition[1] + 1];
             previousDirection = "right"
         } else if (currentPosition[0] > 0 && primaryMatrix[currentPosition[0] - 1][currentPosition[1]] === 0 && previousDirection !== "down") {
-            currentPosition = [currentPosition[0] - 1, currentPosition[1]]
+            currentPosition = [currentPosition[0] - 1, currentPosition[1]];
             previousDirection = "up"
         } else if (currentPosition[1] > 0 && primaryMatrix[currentPosition[0]][currentPosition[1] - 1] === 0 && previousDirection !== "right") {
-            currentPosition = [currentPosition[0], currentPosition[1] - 1]
+            currentPosition = [currentPosition[0], currentPosition[1] - 1];
             previousDirection = "left"
         } else {
             break
@@ -55,12 +55,12 @@ function solve(primaryMatrix, secondaryMatrix, coordinates, startingPoint) {
         steps++
     }
 
-    console.log(steps)
-    definePosition(currentPosition)
+    console.log(steps);
+    definePosition(currentPosition);
 
     function definePosition(currentPosition) {
-        let currentRow = currentPosition[0]
-        let currentCol = currentPosition[1]
+        let currentRow = currentPosition[0];
+        let currentCol = currentPosition[1];
         if (currentRow === 0) {
             console.log("Top")
         } else if (currentRow === primaryMatrixRows - 1) {
